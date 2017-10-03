@@ -2,7 +2,9 @@
 var express = require('express')
 var bp = require('body-parser')
 var MongoClient = require('mongodb').MongoClient
+ObjectId = require('mongodb').ObjectID;
 var modelUser = require('./models/modeluser')
+var modelUserIco = require('./models/modeluserico')
 var versionapi = require('./version')
 var app = express()
 app.use(bp.json())
@@ -31,41 +33,89 @@ app.get(endpointCrudUsuario,function(req,resp){
 		resp.send(err.message)
 	}	
 })
-app.get(endpointCrudUsuario+'/:uid',function(req,resp){
-	uid = req.params.uid
-	mongo.collection('users').findOne({dni:uid}, function(err,result){
-		if(err){
-			resp.status(500)
-		}else{
-			if(result)
-				resp.send(result)
-			else{
-				resp.status(404)
+app.get(endpointCrudUsuario+'/:dni',function(req,resp){
+	try{
+		dni = req.params.dni
+		modelUser.getDNI(dni,function(users){
+			if(users.err){
+				resp.status(users.err)
 				resp.end()
+			}else{
+				resp.send(users.data)
 			}
-		}
-	})
+		})
+	}catch(err){
+		resp.status(500)
+		resp.send(err.message)
+	}
 })
 app.post(endpointCrudUsuario,function(req,resp){
 	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
-	if(req.body.nombre && req.body.apellidos && req.body.dni){
-		mongo.collection("users").insertOne({nombre:req.body.nombre,apellidos:req.body.apellidos,dni:req.body.dni},
-			function(err, result) {
-			if(err){
-				resp.status(500)
+	try{
+		usuario = req.body
+		modelUser.postUser(usuario,function(users){
+			if(users.err){
+				resp.status(users.err)
 				resp.end()
 			}else{
-				resp.send(result)
+				resp.send(users.data)
 			}
 		})
-	}else{
-		resp.status(400)
-		resp.end()
+	}catch(err){
+		resp.status(500)
+		resp.send(err.message)
 	}
 })
-app.put(endpointCrudUsuario,function(req,resp){})
-app.patch(endpointCrudUsuario,function(req,resp){})
-app.delete(endpointCrudUsuario,function(req,resp){})
+app.put(endpointCrudUsuario,function(req,resp){
+	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
+	try{
+		usuario = req.body
+		modelUser.putUser(usuario,function(users){
+			if(users.err){
+				resp.status(users.err)
+				resp.end()
+			}else{
+				resp.send(users.data)
+			}
+		})
+	}catch(err){
+		resp.status(500)
+		resp.send(err.message)
+	}
+})
+app.patch(endpointCrudUsuario,function(req,resp){
+	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
+	try{
+		usuario = req.body
+		modelUser.patchUser(usuario,function(users){
+			if(users.err){
+				resp.status(users.err)
+				resp.end()
+			}else{
+				resp.send(users.data)
+			}
+		})
+	}catch(err){
+		resp.status(500)
+		resp.send(err.message)
+	}
+})
+app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
+	try{
+		dni = req.params.dni
+		modelUser.deleteUser(dni,function(users){
+			if(users.err){
+				resp.status(users.err)
+				resp.end()
+			}else{
+				resp.send(users.data)
+			}
+		})
+	}catch(err){
+		resp.status(500)
+		resp.send(err.message)
+	}
+})
 
 MongoClient.connect(urlmongoprod, function(err, db) {
 	if (err) throw err;
