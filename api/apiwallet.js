@@ -1,7 +1,8 @@
 if(!app)
     throw new Error("Express no existe en este contexto. RuntimeException.")
 
-//CRUD USUARIO
+//CRUD WALLET
+//Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
 var endpointCrudWallet = '/'+versionapi+'/wallets'
 app.get(endpointCrudWallet,function(req,resp){
 	try{
@@ -35,14 +36,14 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 	}
 })
 app.post(endpointCrudWallet,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
-		usuario = req.body
-		modelWallet.postWallet(usuario,function(wallets){
+		wallet = req.body
+		modelWallet.postWallet(wallet,function(wallets){
 			if(wallets.err){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
+                resp.status(201)
 				resp.send(wallets.data)
 			}
 		})
@@ -52,14 +53,14 @@ app.post(endpointCrudWallet,function(req,resp){
 	}
 })
 app.put(endpointCrudWallet,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
-		usuario = req.body
-		modelWallet.putWallet(usuario,function(wallets){
+		wallet = req.body
+		modelWallet.putWallet(wallet,function(wallets){
 			if(wallets.err){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
+                resp.status(204)
 				resp.send(wallets.data)
 			}
 		})
@@ -69,14 +70,14 @@ app.put(endpointCrudWallet,function(req,resp){
 	}
 })
 app.patch(endpointCrudWallet,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
-		usuario = req.body
-		modelWallet.patchWallet(usuario,function(wallets){
+		wallet = req.body
+		modelWallet.patchWallet(wallet,function(wallets){
 			if(wallets.err){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
+                resp.status(204)
 				resp.send(wallets.data)
 			}
 		})
@@ -93,6 +94,7 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
+                resp.status(204)
 				resp.send(wallets.data)
 			}
 		})

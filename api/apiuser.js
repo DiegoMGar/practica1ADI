@@ -43,6 +43,7 @@ app.post(endpointCrudUsuario,function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
+				resp.status(201)
 				resp.send(users.data)
 			}
 		})
@@ -60,6 +61,7 @@ app.put(endpointCrudUsuario,function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
+				resp.status(204)
 				resp.send(users.data)
 			}
 		})
@@ -77,6 +79,7 @@ app.patch(endpointCrudUsuario,function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
+				resp.status(204)
 				resp.send(users.data)
 			}
 		})
@@ -93,6 +96,7 @@ app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
+				resp.status(204)
 				resp.send(users.data)
 			}
 		})

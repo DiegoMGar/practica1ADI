@@ -2,7 +2,11 @@
 var express = require('express')
 var bp = require('body-parser')
 var MongoClient = require('mongodb').MongoClient
-var urlmongoprod = 'mongodb://localhost:27017/prodadi1718'
+var urlmongoprod = ''
+if(typeof urlmongotest == 'undefined')
+	urlmongoprod = 'mongodb://localhost:27017/prodadi1718'
+else
+	urlmongoprod = urlmongotest
 
 //variables globales
 ObjectId = require('mongodb').ObjectID;
@@ -29,7 +33,14 @@ require('./api/apiwallet')
 MongoClient.connect(urlmongoprod, function(err, db) {
 	if (err) throw err;
 	mongo = db
-	launchServer()
+	if(typeof urlmongotest != 'undefined'){
+		mongo.collection("users").drop(function(err, delOK) {
+			mongo.collection("wallets").drop(function(err, delOK) {
+				launchServer()
+			});
+		});
+	}else
+		launchServer()
 })
 function launchServer() {
 	app.listen(3000, function () {
