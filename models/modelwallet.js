@@ -1,7 +1,7 @@
 var wallet = {
     getAll:
     function(callback){
-        mongo.collection('users').find({}).toArray(function(err,result){
+        mongo.collection('wallet').find({}).toArray(function(err,result){
             if(err){
                 callback({err:500})
             }else{
@@ -11,7 +11,7 @@ var wallet = {
     },
     getDNI:
     function(oid,callback){
-        mongo.collection('users').find({dni:oid},{}).toArray(function(err,result){
+        mongo.collection('wallet').find({dni:oid},{}).toArray(function(err,result){
             if(err){
                 callback({err:500})
             }else if(result.length<1){
@@ -24,7 +24,7 @@ var wallet = {
     getOID:
     function(oid,callback){
         var o_id = ObjectId(oid)
-        mongo.collection('users').find({_id:o_id},{}).toArray(function(err,result){
+        mongo.collection('wallet').find({_id:o_id},{}).toArray(function(err,result){
             if(err){
                 callback({err:500})
             }else if(result.length<1){
@@ -34,11 +34,11 @@ var wallet = {
             }
         })
     },
-    postUser:
+    postWallet:
     function(usuario, callback){
         //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario.nombre && usuario.apellidos && usuario.dni){
-            mongo.collection("users").insert({nombre:usuario.nombre,apellidos:usuario.apellidos,dni:usuario.dni},
+            mongo.collection('wallet').insert({nombre:usuario.nombre,apellidos:usuario.apellidos,dni:usuario.dni},
                 function(err, result) {
                 if(err){
                     callback({err:500})
@@ -51,21 +51,21 @@ var wallet = {
             callback({err:400})
         }
     },
-    putUser:
+    putWallet:
     function(usuario, callback){
         //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario.nombre && usuario.apellidos && usuario.dni && usuario._id){
             var o_id = ObjectId(usuario._id)
             var query = { _id: o_id }
             var newValues = {nombre: usuario.nombre,apellidos: usuario.apellidos,dni: usuario.dni}
-            mongo.collection("users").updateOne(query,newValues,
+            mongo.collection('wallet').updateOne(query,newValues,
                 function(err, result) {
                 if(err){
                     callback({err:500})
                 }else if(result.n==0){
                     callback({err:404})
                 }else{
-                    console.log("putUser: "+result)
+                    console.log('putUser: '+result)
                     callback({data:usuario})
                 }
             })
@@ -73,7 +73,7 @@ var wallet = {
             callback({err:400})
         }
     },
-    patchUser:
+    patchWallet:
     function(usuario, callback){
         //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario._id){
@@ -91,15 +91,15 @@ var wallet = {
             callback({err:400})
         }
     },
-    deleteUser:
+    deleteWallet:
     function(oid, callback){
-        mongo.collection('users').deleteOne({dni:oid},function(err,result){
+        mongo.collection('wallet').deleteOne({dni:oid},function(err,result){
             if(err){
                 callback({err:500})
             }else if(result.n==0){
                 callback({err:404})
             }else{
-                console.log("deleteUser: "+result)
+                console.log('deleteUser: '+result)
                 callback({data:{status:OK}})
             }
         })

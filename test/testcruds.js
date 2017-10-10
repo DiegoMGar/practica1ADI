@@ -3,11 +3,11 @@ var supertest = require('supertest');
 var versionapi = require('../version');
 var MongoClient = require('mongodb').MongoClient
 
-var urlmongotest = "mongodb://localhost:27017/testadi1718"
+var urlmongotest = 'mongodb://localhost:27017/testadi1718'
 MongoClient.connect(urlmongotest, function(err, db) {
 	if (err) throw err;
     mongo = db
-    console.log("Conectado a mongo de test")
+    console.log('Conectado a mongo de test')
 })
 
 describe('Test de la raiz', function(){

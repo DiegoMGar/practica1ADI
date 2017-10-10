@@ -38,7 +38,7 @@ var user = {
     function(usuario, callback){
         //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario.nombre && usuario.apellidos && usuario.dni){
-            mongo.collection("users").insert({nombre:usuario.nombre,apellidos:usuario.apellidos,dni:usuario.dni},
+            mongo.collection('users').insert({nombre:usuario.nombre,apellidos:usuario.apellidos,dni:usuario.dni},
                 function(err, result) {
                 if(err){
                     callback({err:500})
@@ -58,14 +58,14 @@ var user = {
             var o_id = ObjectId(usuario._id)
             var query = { _id: o_id }
             var newValues = {nombre: usuario.nombre,apellidos: usuario.apellidos,dni: usuario.dni}
-            mongo.collection("users").updateOne(query,newValues,
+            mongo.collection('users').updateOne(query,newValues,
                 function(err, result) {
                 if(err){
                     callback({err:500})
                 }else if(result.n==0){
                     callback({err:404})
                 }else{
-                    console.log("putUser: "+result)
+                    console.log('putUser: '+result)
                     callback({data:usuario})
                 }
             })
@@ -99,7 +99,7 @@ var user = {
             }else if(result.n==0){
                 callback({err:404})
             }else{
-                console.log("deleteUser: "+result)
+                console.log('deleteUser: '+result)
                 callback({data:{status:OK}})
             }
         })

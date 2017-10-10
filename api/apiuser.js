@@ -1,5 +1,5 @@
 if(!app)
-    throw new Error("Express no existe en este contexto. RuntimeException.")
+    throw new Error('Express no existe en este contexto. RuntimeException.')
 
 //CRUD USUARIO
 var endpointCrudUsuario = '/'+versionapi+'/users'
