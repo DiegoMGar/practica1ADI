@@ -1,4 +1,4 @@
-var user = {
+var wallet = {
     getAll:
     function(callback){
         mongo.collection('users').find({}).toArray(function(err,result){
@@ -105,4 +105,4 @@ var user = {
         })
     }
 }
-module.exports = user
+module.exports = wallet
