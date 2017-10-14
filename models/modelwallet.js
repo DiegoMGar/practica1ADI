@@ -39,7 +39,7 @@ var walletObj = {
     function(wallet, callback){
         //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
-            wallet.saldo && wallet.moneda_symbol && wallet.usuario_dni){
+            (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
             mongo.collection(walletCollection).insert({titulo: wallet.titulo,
             descripcion: wallet.descripcion,
             saldo: wallet.saldo,
@@ -61,7 +61,7 @@ var walletObj = {
     function(wallet, callback){
         //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
-            wallet.saldo && wallet.moneda_symbol && wallet.usuario_dni){
+            (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
             walletObj.getOID(wallet._id,function(data){
                 if(data.err || data.length<1 || data.data.length<1){callback({err:((data.err)? data.err : 404)}); return}
                 walletObj.updateWallet(wallet,function(result){
@@ -79,11 +79,16 @@ var walletObj = {
         if(wallet._id){
             walletObj.getOID(wallet._id,function(data){
                 if(data.err || data.length<1 || data.data.length<1){callback({err:((data.err)? data.err : 404)}); return}
-                if(wallet.titulo) data.data[0]['titulo']=wallet.titulo
-                if(wallet.descripcion) data.data[0]['descripcion']=wallet.descripcion
-                if(wallet.moneda_symbol) data.data[0]['moneda_symbol']=wallet.moneda_symbol
-                if(wallet.saldo) data.data[0]['saldo']=wallet.saldo
-                if(wallet.usuario_dni) data.data[0]['usuario_dni']=wallet.usuario_dni
+                if(wallet.titulo)
+                    data.data[0]['titulo']=wallet.titulo
+                if(wallet.descripcion || wallet.descripcion == '')
+                    data.data[0]['descripcion']=wallet.descripcion
+                if(wallet.moneda_symbol)
+                    data.data[0]['moneda_symbol']=wallet.moneda_symbol
+                if(wallet.saldo || wallet.saldo == 0)
+                    data.data[0]['saldo']=wallet.saldo
+                if(wallet.usuario_dni)
+                    data.data[0]['usuario_dni']=wallet.usuario_dni
                 walletObj.updateWallet(data.data[0],function(result){
                     callback(result)
                 })

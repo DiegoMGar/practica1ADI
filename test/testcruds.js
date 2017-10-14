@@ -1,9 +1,8 @@
+urlmongotest = 'mongodb://localhost:27017/testadi1718'
 var app = require('../app');
 var supertest = require('supertest');
 var versionapi = require('../version');
 var MongoClient = require('mongodb').MongoClient
-
-urlmongotest = 'mongodb://localhost:27017/testadi1718'
 
 describe('Test de la raiz', function(){
     it('/ devuelve la versión más reciente.', function(done){
@@ -56,7 +55,7 @@ describe('Test del CRUD Usuario', function(){
     it('POST /users devuelve un 201, introducido correctamente.', function(done){
         supertest(app)
             .post('/'+versionapi+'/users')
-            .send({ dni:'111111111',nombre:'Diego',apellidos:'Maroto' })
+            .send({ dni:'111111111',nombre:'Diego1',apellidos:'Maroto' })
             .expect(201, done);
     });
     it('POST /users devuelve un 403, el usuario ya existe.', function(done){
@@ -241,31 +240,116 @@ describe('Test del CRUD Usuario', function(){
 })
 
 describe('Test del CRUD Wallet', function(){
-    it('GET /users devuelve un listado vacío', function(done){
+    it('GET /wallets devuelve un listado vacío', function(done){
         supertest(app)
             .get('/'+versionapi+'/wallets')
             .expect(200)
             .expect('[]', done);
     });
-    it('POST /users devuelve un listado vacío #TODO', function(done){
+    it('POST /wallets devuelve 201 recurso creado', function(done){
         supertest(app)
-            .get('/'+versionapi+'/wallets')
+            .post('/'+versionapi+'/wallets')
+            .send({titulo:'Cartera principal',
+            descripcion:'Mi cartera de Bitcoins principal',
+            saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+            .expect(201, done);
+    });
+    it('PUT /wallets devuelve un 204 editado correctamente.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar el usuario.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .put('/'+versionapi+'/wallets')
+                .send({ _id: o_id, titulo:'Cartera principal',
+                descripcion:'Mi cartera de Bitcoins principal cambiada',
+                saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
+    });
+    it('PUT /wallets devuelve un 404 usuario no existe. (El tiempo no es problema, es cosa del test, que añade y elimina.)', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar el usuario.')
+            }else{
+                o_id=result.insertedIds[0]
+                mongo.collection('wallets').deleteOne({_id:o_id},function(err,result){
+                    if(err){
+                        throw new Error('No se ha podido borrar el usuario.')
+                    }else{
+                        supertest(app)
+                        .put('/'+versionapi+'/wallets')
+                        .send({ _id: o_id, titulo:'Cartera principal',
+                        descripcion:'Mi cartera de Bitcoins principal',
+                        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                        .expect(404, done);
+                    }
+                })
+            }
+        })
+    });
+    it('PUT /wallets devuelve un 500 error de servidor por oid mal formado.', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({ _id: '12223456456', titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(500, done);
+    });
+    it('PUT /wallets devuelve un 400 porque le falta el usuario_dni', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({_id: '12223456456', titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC'})
+        .expect(400, done);
+    });
+    it('PUT /wallets devuelve un 400 porque le falta el titulo', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({_id: '12223456456',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(400, done);
+    });
+    it('PUT /wallets devuelve un 400 porque le falta la descripción', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({_id: '12223456456', titulo:'Cartera principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(400, done);
+    });
+    it('PUT /wallets devuelve un 400 porque le falta el saldo', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({_id: '12223456456', titulo:'Cartera principal',
+        descripcion:'D', moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(400, done);
+    });
+    it('PUT /wallets devuelve un 400 porque le falta el símbolo de moneda', function(done){
+        supertest(app)
+        .put('/'+versionapi+'/wallets')
+        .send({_id: '12223456456', titulo:'Cartera principal',
+        saldo:0, descripcion:'BTC', usuario_dni:'48576470X'})
+        .expect(400, done);
+    });
+    it('PATCH /wallets devuelve un listado vacío #TODO', function(done){
+        supertest(app)
+            .patch('/'+versionapi+'/wallets')
             .expect(200)
             .expect('[]', done);
     });
-    it('PUT /users devuelve un listado vacío #TODO', function(done){
-        supertest(app)
-            .get('/'+versionapi+'/wallets')
-            .expect(200)
-            .expect('[]', done);
-    });
-    it('PATC /users devuelve un listado vacío #TODO', function(done){
-        supertest(app)
-            .get('/'+versionapi+'/wallets')
-            .expect(200)
-            .expect('[]', done);
-    });
-    it('DELETE /users devuelve un listado vacío #TODO', function(done){
+    it('DELETE /wallets devuelve un listado vacío #TODO', function(done){
         supertest(app)
             .get('/'+versionapi+'/wallets')
             .expect(200)

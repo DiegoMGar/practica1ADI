@@ -36,11 +36,14 @@ MongoClient.connect(urlmongoprod, function(err, db) {
 	if(typeof urlmongotest != 'undefined'){
 		mongo.collection("users").drop(function(err, delOK) {
 			mongo.collection("wallets").drop(function(err, delOK) {
+				console.log('Conecto a test: '+urlmongoprod)				
 				launchServer()
 			});
 		});
-	}else
+	}else{
+		console.log('Conecto a producción: '+urlmongoprod)
 		launchServer()
+	}
 })
 function launchServer() {
 	app.listen(3000, function () {
