@@ -1,0 +1,607 @@
+swagger: '2.0'
+info:
+  description: |-
+    Wiki de la práctica de ADI 2017 en la Universidad de Alicante.
+     **Author:** Diego Maroto.
+  version: 1.0.0
+  title: Crytocurrency wallet
+  termsOfService: ''
+  contact:
+    email: dmg65@alu.ua.es
+host: www.midominio.com
+basePath: /v1
+tags:
+  - name: news
+    description: Usa una api externa para mostrar noticias relacionadas con una fuente
+  - name: user
+    description: Operaciones relacionadas con usuarios
+  - name: wallet
+    description: Acceso a las operaciones de las carteras
+  - name: moneda
+    description: _**SIN IMPLEMENTAR //TODO**_
+schemes:
+  - http
+paths:
+  /newsapi:
+    get:
+      tags:
+        - news
+      summary: Listado de fuentes de noticias de una api externa
+      description: Listado de fuentes de noticias de una api externa
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Petición correcta de la api, muestra listado de fuentes'
+        '400':
+          description: 'Error en la petición, se mostrará el error externo'
+  '/newsapi/{idFuente}':
+    get:
+      tags:
+        - news
+      summary: Listado de noticias publicadas por la fuente idFuente
+      description: Listado de noticias publicadas por la fuente idFuente
+      produces:
+        - application/json
+      parameters:
+        - name: idFuente
+          in: path
+          description: Nombre del usuario
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 'Petición correcta de la api, muestra listado de noticias'
+        '400':
+          description: 'Error en la petición, se mostrará el error externo'
+  /users:
+    get:
+      tags:
+        - user
+      summary: Obtiene un listado de usuarios
+      description: Obtiene un listado de usuarios
+      operationId: getUsers
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: >-
+            Devuelve un listado de los usuarios, array vacío si no hay usuarios
+            registrados
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+    post:
+      tags:
+        - user
+      summary: Crea un usuario nuevo
+      description: Crea un usuario nuevo
+      operationId: addUser
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: true
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: true
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: true
+          type: string
+    put:
+      tags:
+        - user
+      summary: 'Edita un usuario desde todas sus propiedades, por OID'
+      description: 'Edita un usuario desde todas sus propiedades, por OID'
+      operationId: modifyUser
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '404':
+          description: No se encuentra el usuario por oid
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: ObjectID de mongodb del usuario
+          required: true
+          type: string
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: true
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: true
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: true
+          type: string
+    patch:
+      tags:
+        - user
+      summary: 'Edita un usuario con una cantidad de propiedades optativa, por OID'
+      description: 'Edita un usuario con una cantidad de propiedades optativa, por OID'
+      operationId: modifyUserPartial
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '404':
+          description: No se encuentra el usuario por oid
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: ObjectID de mongodb del usuario
+          required: true
+          type: string
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: false
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: false
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: false
+          type: string
+  '/users/{dni}':
+    get:
+      tags:
+        - user
+      summary: Obtiene la información de un usuario por dni
+      description: Edita un usuario con propiedades optativas
+      operationId: getUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '404':
+          description: No se ha encontrado el usuario por DNI
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: dni
+          in: path
+          description: DNI del usuario
+          required: true
+          type: string
+    delete:
+      tags:
+        - user
+      summary: Borra un usuario por dni
+      description: Borra un usuario por dni
+      operationId: deleteUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '404':
+          description: No se encuentra el usuario por DNI
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: dni
+          in: path
+          description: DNI del usuario
+          required: true
+          type: string
+  /wallets:
+    get:
+      tags:
+        - wallet
+      summary: Obtiene un listado de wallets
+      description: Obtiene un listado de wallets
+      operationId: getWallets
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Devuelve un listado de las wallets
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+    post:
+      tags:
+        - wallet
+      summary: Crea una wallet nueva
+      description: Crea una wallet nueva
+      operationId: addWallet
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: titulo
+          in: formData
+          description: Título de la cartera
+          required: true
+          type: string
+        - name: descripcion
+          in: formData
+          description: Descripción de la cartera
+          required: true
+          type: string
+        - name: moneda_symbol
+          in: formData
+          description: Símbolo de la moneda que contiene esta wallet
+          required: true
+          type: string
+        - name: saldo
+          in: formData
+          description: Saldo de la wallet
+          required: true
+          type: string
+        - name: usuario_dni
+          in: formData
+          description: Dni del usuario que es dueño de la wallet
+          required: true
+          type: string
+    put:
+      tags:
+        - wallet
+      summary: 'Edita un usuario desde todas sus propiedades, por OID'
+      description: 'Edita un usuario desde todas sus propiedades, por OID'
+      operationId: modifyWallet
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '404':
+          description: No se ha encontrado la wallet por oid
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: El ObjectId de mongodb de la wallet
+          type: string
+          required: true
+        - name: titulo
+          in: formData
+          description: Título de la cartera
+          required: true
+          type: string
+        - name: descripcion
+          in: formData
+          description: Descripción de la cartera
+          required: true
+          type: string
+        - name: moneda_symbol
+          in: formData
+          description: Símbolo de la moneda que contiene esta wallet
+          required: true
+          type: string
+        - name: saldo
+          in: formData
+          description: Saldo de la wallet
+          required: true
+          type: string
+        - name: usuario_dni
+          in: formData
+          description: Dni del usuario que es dueño de la wallet
+          required: true
+          type: string
+    patch:
+      tags:
+        - wallet
+      summary: 'Edita un usuario con una cantidad de propiedades optativa, por OID'
+      description: 'Edita un usuario con una cantidad de propiedades optativa, por OID'
+      operationId: modifyWalletPartial
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '404':
+          description: No se ha encontrado la wallet por oid
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: El ObjectId de mongodb de la wallet
+          type: string
+          required: true
+        - name: titulo
+          in: formData
+          description: Título de la cartera
+          required: false
+          type: string
+        - name: descripcion
+          in: formData
+          description: Descripción de la cartera
+          required: false
+          type: string
+        - name: moneda_symbol
+          in: formData
+          description: Símbolo de la moneda que contiene esta wallet
+          required: false
+          type: string
+        - name: saldo
+          in: formData
+          description: Saldo de la wallet
+          required: false
+          type: string
+        - name: usuario_dni
+          in: formData
+          description: Dni del usuario que es dueño de la wallet
+          required: false
+          type: string
+  '/wallets/{oid}':
+    get:
+      tags:
+        - wallet
+      summary: >-
+        Obtiene el listado de wallets cuyo dueño es el usuario con ese DNI
+        (OID).
+      description: >-
+        Obtiene el listado de wallets cuyo dueño es el usuario con ese DNI
+        (OID).
+      operationId: getWallet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Listado de wallets cuyo dueño es el usuario con ese dni.
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: oid
+          in: path
+          description: DNI del usuario dueño de las wallets a buscar
+          required: true
+          type: string
+    delete:
+      tags:
+        - wallet
+      summary: Borra una wallet por OID (ObjectId mongodb)
+      description: Borra una wallet por OID (ObjectId mongodb)
+      operationId: deleteWallet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '404':
+          description: No se ha encontrado la wallet con ese OID
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: oid
+          in: path
+          description: ObjectId de mongodb de la wallet a borrar
+          required: true
+          type: string
+  /moneda:
+    get:
+      tags:
+        - moneda
+      summary: Obtiene un listado de monedas
+      description: Obtiene un listado de monedas
+      operationId: getMonedas
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: >-
+            Devuelve un listado de las monedas, array vacío si no hay usuarios
+            registrados
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+    post:
+      tags:
+        - moneda
+      summary: Crea una moneda nueva
+      description: Crea una moneda nueva
+      operationId: addMoneda
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: true
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: true
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: true
+          type: string
+    put:
+      tags:
+        - moneda
+      summary: Edita un usuario desde todas sus propiedades
+      description: Edita un usuario desde todas sus propiedades
+      operationId: modifyMoneda
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: ObjectID de mongodb del usuario
+          required: true
+          type: string
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: true
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: true
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: true
+          type: string
+    patch:
+      tags:
+        - moneda
+      summary: Edita un usuario con propiedades optativas
+      description: Edita un usuario con propiedades optativas
+      operationId: modifyMonedaPartial
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: _id
+          in: formData
+          description: ObjectID de mongodb del usuario
+          required: true
+          type: string
+        - name: nombre
+          in: formData
+          description: Nombre del usuario
+          required: false
+          type: string
+        - name: apellidos
+          in: formData
+          description: Apellidos del usuario
+          required: false
+          type: string
+        - name: dni
+          in: formData
+          description: Dni del usuario
+          required: false
+          type: string
+  '/moneda/{dni}':
+    get:
+      tags:
+        - moneda
+      summary: Obtiene la información de un usuario
+      description: Edita un usuario con propiedades optativas
+      operationId: getMoneda
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: dni
+          in: path
+          description: DNI del usuario
+          required: true
+          type: string
+    delete:
+      tags:
+        - moneda
+      summary: Borra un usuario
+      description: Edita un usuario con propiedades optativas
+      operationId: deleteMoneda
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Todo ha ido correctamente, usuario creado'
+        '400':
+          description: Faltan campos obligatorios
+        '500':
+          description: Error de nodejs o en base de datos en servidor
+      parameters:
+        - name: dni
+          in: path
+          description: DNI del usuario
+          required: true
+          type: string
