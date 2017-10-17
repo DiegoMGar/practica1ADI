@@ -60,7 +60,7 @@ app.put(endpointCrudWallet,function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-                resp.status(204)
+                resp.status(200)
 				resp.send(wallets.data)
 			}
 		})
@@ -77,7 +77,7 @@ app.patch(endpointCrudWallet,function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-                resp.status(204)
+                resp.status(200)
 				resp.send(wallets.data)
 			}
 		})
@@ -94,7 +94,7 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-                resp.status(204)
+                resp.status(200)
 				resp.send(wallets.data)
 			}
 		})

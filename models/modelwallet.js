@@ -40,17 +40,17 @@ var walletObj = {
         //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
             (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
-            mongo.collection(walletCollection).insert({titulo: wallet.titulo,
-            descripcion: wallet.descripcion,
-            saldo: wallet.saldo,
-            moneda_symbol: wallet.moneda_symbol,
-            usuario_dni: wallet.usuario_dni},
+            var newValues = {titulo: wallet.titulo,
+                descripcion: wallet.descripcion,
+                saldo: wallet.saldo,
+                moneda_symbol: wallet.moneda_symbol,
+                usuario_dni: wallet.usuario_dni}
+            mongo.collection(walletCollection).insert(newValues,
                 function(err, result) {
                 if(err){
                     callback({err:500})
                 }else{
-                    wallet._id=result.insertedIds[0]
-                    callback({data:wallet})
+                    callback({data:result.ops[0]})
                 }
             })
         }else{
@@ -62,13 +62,9 @@ var walletObj = {
         //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
             (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
-            walletObj.getOID(wallet._id,function(data){
-                if(data.err || data.length<1 || data.data.length<1){callback({err:((data.err)? data.err : 404)}); return}
-                walletObj.updateWallet(wallet,function(result){
-                    callback(result)
-                })
+            walletObj.updateWallet(wallet,function(result){
+                callback(result)
             })
-            
         }else{
             callback({err:400})
         }
@@ -77,21 +73,8 @@ var walletObj = {
     function(wallet, callback){
         //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet._id){
-            walletObj.getOID(wallet._id,function(data){
-                if(data.err || data.length<1 || data.data.length<1){callback({err:((data.err)? data.err : 404)}); return}
-                if(wallet.titulo)
-                    data.data[0]['titulo']=wallet.titulo
-                if(wallet.descripcion || wallet.descripcion == '')
-                    data.data[0]['descripcion']=wallet.descripcion
-                if(wallet.moneda_symbol)
-                    data.data[0]['moneda_symbol']=wallet.moneda_symbol
-                if(wallet.saldo || wallet.saldo == 0)
-                    data.data[0]['saldo']=wallet.saldo
-                if(wallet.usuario_dni)
-                    data.data[0]['usuario_dni']=wallet.usuario_dni
-                walletObj.updateWallet(data.data[0],function(result){
-                    callback(result)
-                })
+            walletObj.updateWallet(wallet,function(result){
+                callback(result)
             })
         }else{
             callback({err:400})
@@ -112,21 +95,28 @@ var walletObj = {
     },
     updateWallet: //FUNCION AUXILIAR, NO USAR SUELTA, SE DEBEN HACER LAS COMPROBACIONES PERTINENTES EN DATOS
     function(wallet, callback){
-        var o_id = ObjectId(wallet._id)
-        var query = { _id: o_id }
-        var newValues = {titulo: wallet.titulo,
-            descripcion: wallet.descripcion,
-            saldo: wallet.saldo,
-            moneda_symbol: wallet.moneda_symbol,
-            usuario_dni: wallet.usuario_dni}
+        var query = {_id: ObjectId(wallet._id)}
+        var secureWallet = {}
+        if(wallet.titulo)
+            secureWallet.titulo = wallet.titulo
+        if(wallet.descripcion || wallet.descripcion == '')
+            secureWallet.descripcion = wallet.descripcion
+        if(wallet.moneda_symbol)
+            secureWallet.moneda_symbol = wallet.moneda_symbol
+        if(wallet.saldo || wallet.saldo == 0)
+            secureWallet.saldo = wallet.saldo
+        if(wallet.usuario_dni)
+            secureWallet.usuario_dni = wallet.usuario_dni
+        var newValues = {$set:secureWallet}
         mongo.collection(walletCollection).updateOne(query,newValues,
             function(err, result) {
             if(err){
                 callback({err:500})
-            }else if(result.nModified==0){
+            }else if(result.result.n==0){
                 callback({err:404})
             }else{
-                callback({data:wallet})
+                secureWallet._id = wallet._id
+                callback({data:secureWallet})
             }
         })
     }

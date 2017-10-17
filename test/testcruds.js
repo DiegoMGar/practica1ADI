@@ -74,7 +74,7 @@ describe('Test del CRUD Usuario', function(){
             .get('/'+versionapi+'/users/111111112')
             .expect(404, done);
     });
-    it('PUT /users devuelve un 204 editado correctamente.', function(done){
+    it('PUT /users devuelve un 200 editado correctamente.', function(done){
         newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111112'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
@@ -85,12 +85,12 @@ describe('Test del CRUD Usuario', function(){
                 supertest(app)
                 .put('/'+versionapi+'/users')
                 .send({ _id: o_id, dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
     it('PUT /users devuelve un 404 usuario no existe. (El tiempo no es problema, es cosa del test, que añade y elimina.)', function(done){
-        newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111112'}
+        newdata = {nombre:'Prueba2',apellidos:'PruebaApellidos',dni:'111111112'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
             if(err){
@@ -134,7 +134,7 @@ describe('Test del CRUD Usuario', function(){
         .send({_id: '12223456456',dni:'Se cambia',nombre:'Se cambia' })
         .expect(400, done);
     });
-    it('PATCH /users devuelve un 204 editado correctamente con toda la estructura de usuario.', function(done){
+    it('PATCH /users devuelve un 200 editado correctamente con toda la estructura de usuario.', function(done){
         newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111114'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
@@ -145,11 +145,11 @@ describe('Test del CRUD Usuario', function(){
                 supertest(app)
                 .patch('/'+versionapi+'/users')
                 .send({ _id: o_id, dni:'111111112',nombre:"Se cambia",apellidos:'Se cambia' })
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /users devuelve un 204 editado correctamente faltando nombre.', function(done){
+    it('PATCH /users devuelve un 200 editado correctamente faltando nombre.', function(done){
         newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111114'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
@@ -160,11 +160,11 @@ describe('Test del CRUD Usuario', function(){
                 supertest(app)
                 .patch('/'+versionapi+'/users')
                 .send({ _id: o_id, dni:'111111112',apellidos:'Se cambia'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /users devuelve un 204 editado correctamente faltando apellidos.', function(done){
+    it('PATCH /users devuelve un 200 editado correctamente faltando apellidos.', function(done){
         newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111114'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
@@ -175,11 +175,11 @@ describe('Test del CRUD Usuario', function(){
                 supertest(app)
                 .patch('/'+versionapi+'/users')
                 .send({ _id: o_id, dni:'111111112',nombre:'Se cambia' })
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /users devuelve un 204 editado correctamente faltando dni.', function(done){
+    it('PATCH /users devuelve un 200 editado correctamente faltando dni.', function(done){
         newdata = {nombre:'Prueba',apellidos:'PruebaApellidos',dni:'111111114'}
         mongo.collection('users').insert(newdata,
             function(err, result) {
@@ -190,7 +190,7 @@ describe('Test del CRUD Usuario', function(){
                 supertest(app)
                 .patch('/'+versionapi+'/users')
                 .send({ _id: o_id, apellidos:'Se cambia' })
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
@@ -227,10 +227,10 @@ describe('Test del CRUD Usuario', function(){
         .send({dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
         .expect(400, done);
     });
-    it('DELETE /users devuelve un 204 eliminado correctamente.', function(done){
+    it('DELETE /users devuelve un 200 eliminado correctamente.', function(done){
         supertest(app)
             .delete('/'+versionapi+'/users/111111112')
-            .expect(204, done);
+            .expect(200, done);
     });
     it('DELETE /users devuelve un 404 usuario no encontrado.', function(done){
         supertest(app)
@@ -254,7 +254,7 @@ describe('Test del CRUD Wallet', function(){
             saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
             .expect(201, done);
     });
-    it('PUT /wallets devuelve un 204 editado correctamente.', function(done){
+    it('PUT /wallets devuelve un 200 editado correctamente.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -269,7 +269,7 @@ describe('Test del CRUD Wallet', function(){
                 .send({ _id: o_id, titulo:'Cartera principal',
                 descripcion:'Mi cartera de Bitcoins principal cambiada',
                 saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
@@ -343,7 +343,7 @@ describe('Test del CRUD Wallet', function(){
         saldo:0, descripcion:'BTC', usuario_dni:'48576470X'})
         .expect(400, done);
     });
-    it('PATCH /wallets devuelve un 204 editado correctamente con toda la estructura de usuario.', function(done){
+    it('PATCH /wallets devuelve un 200 editado correctamente con toda la estructura de usuario.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -358,11 +358,11 @@ describe('Test del CRUD Wallet', function(){
                 .send({ _id: o_id, titulo:'Cartera cambiada',
                 descripcion:'Mi cartera de Bitcoins principal',
                 saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /wallets devuelve un 204 editado correctamente faltando titulo.', function(done){
+    it('PATCH /wallets devuelve un 200 editado correctamente faltando titulo.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -377,11 +377,11 @@ describe('Test del CRUD Wallet', function(){
                 .send({ _id: o_id,
                 descripcion:'Mi cartera de Bitcoins principal',
                 saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /wallets devuelve un 204 editado correctamente faltando descripción.', function(done){
+    it('PATCH /wallets devuelve un 200 editado correctamente faltando descripción.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -395,11 +395,11 @@ describe('Test del CRUD Wallet', function(){
                 .patch('/'+versionapi+'/wallets')
                 .send({ _id: o_id, titulo:'Cartera principal',
                 saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /wallets devuelve un 204 editado correctamente faltando moneda_symbol.', function(done){
+    it('PATCH /wallets devuelve un 200 editado correctamente faltando moneda_symbol.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -414,11 +414,11 @@ describe('Test del CRUD Wallet', function(){
                 .send({ _id: o_id, titulo:'Cartera principal',
                 descripcion:'Mi cartera de Bitcoins principal',
                 saldo:0, usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
-    it('PATCH /wallets devuelve un 204 editado correctamente faltando saldo.', function(done){
+    it('PATCH /wallets devuelve un 200 editado correctamente faltando saldo.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -433,7 +433,7 @@ describe('Test del CRUD Wallet', function(){
                 .send({ _id: o_id, titulo:'Cartera principal',
                 descripcion:'Mi cartera de Bitcoins principal',
                 moneda_symbol:'ETH', usuario_dni:'48576470X'})
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
@@ -478,7 +478,7 @@ describe('Test del CRUD Wallet', function(){
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
         .expect(400, done);
     });
-    it('DELETE /wallets devuelve un 204 eliminado correctamente.', function(done){
+    it('DELETE /wallets devuelve un 200 eliminado correctamente.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -490,7 +490,7 @@ describe('Test del CRUD Wallet', function(){
                 o_id=result.insertedIds[0]
                 supertest(app)
                 .delete('/'+versionapi+'/wallets/'+o_id)
-                .expect(204, done);
+                .expect(200, done);
             }
         })
     });
