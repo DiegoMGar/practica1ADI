@@ -261,7 +261,7 @@ describe('Test del CRUD Wallet', function(){
         mongo.collection('wallets').insert(newdata,
             function(err, result) {
             if(err){
-                throw new Error('No se ha podido insertar el usuario.')
+                throw new Error('No se ha podido insertar la wallet.')
             }else{
                 o_id=result.insertedIds[0]
                 supertest(app)
@@ -280,12 +280,12 @@ describe('Test del CRUD Wallet', function(){
         mongo.collection('wallets').insert(newdata,
             function(err, result) {
             if(err){
-                throw new Error('No se ha podido insertar el usuario.')
+                throw new Error('No se ha podido insertar la wallet.')
             }else{
                 o_id=result.insertedIds[0]
                 mongo.collection('wallets').deleteOne({_id:o_id},function(err,result){
                     if(err){
-                        throw new Error('No se ha podido borrar el usuario.')
+                        throw new Error('No se ha podido borrar la wallet.')
                     }else{
                         supertest(app)
                         .put('/'+versionapi+'/wallets')
@@ -343,16 +343,177 @@ describe('Test del CRUD Wallet', function(){
         saldo:0, descripcion:'BTC', usuario_dni:'48576470X'})
         .expect(400, done);
     });
-    it('PATCH /wallets devuelve un listado vacío #TODO', function(done){
-        supertest(app)
-            .patch('/'+versionapi+'/wallets')
-            .expect(200)
-            .expect('[]', done);
+    it('PATCH /wallets devuelve un 204 editado correctamente con toda la estructura de usuario.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .patch('/'+versionapi+'/wallets')
+                .send({ _id: o_id, titulo:'Cartera cambiada',
+                descripcion:'Mi cartera de Bitcoins principal',
+                saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
     });
-    it('DELETE /wallets devuelve un listado vacío #TODO', function(done){
+    it('PATCH /wallets devuelve un 204 editado correctamente faltando titulo.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .patch('/'+versionapi+'/wallets')
+                .send({ _id: o_id,
+                descripcion:'Mi cartera de Bitcoins principal',
+                saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
+    });
+    it('PATCH /wallets devuelve un 204 editado correctamente faltando descripción.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .patch('/'+versionapi+'/wallets')
+                .send({ _id: o_id, titulo:'Cartera principal',
+                saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
+    });
+    it('PATCH /wallets devuelve un 204 editado correctamente faltando moneda_symbol.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .patch('/'+versionapi+'/wallets')
+                .send({ _id: o_id, titulo:'Cartera principal',
+                descripcion:'Mi cartera de Bitcoins principal',
+                saldo:0, usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
+    });
+    it('PATCH /wallets devuelve un 204 editado correctamente faltando saldo.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .patch('/'+versionapi+'/wallets')
+                .send({ _id: o_id, titulo:'Cartera principal',
+                descripcion:'Mi cartera de Bitcoins principal',
+                moneda_symbol:'ETH', usuario_dni:'48576470X'})
+                .expect(204, done);
+            }
+        })
+    });
+    it('PATCH /wallets devuelve un 404 usuario no existe.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                mongo.collection('wallets').deleteOne({_id:o_id},function(err,result){
+                    if(err){
+                        throw new Error('No se ha podido borrar la wallet.')
+                    }else{
+                        supertest(app)
+                        .patch('/'+versionapi+'/wallets')
+                        .send({ _id: o_id, titulo:'Cartera principal',
+                        descripcion:'Mi cartera de Bitcoins principal',
+                        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+                        .expect(404, done);
+                    }
+                })
+            }
+        })
+    });
+    it('PATCH /wallets devuelve un 500 error de servidor por oid mal formado.', function(done){
         supertest(app)
-            .get('/'+versionapi+'/wallets')
-            .expect(200)
-            .expect('[]', done);
+        .patch('/'+versionapi+'/wallets')
+        .send({ _id: '12223456456', titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(500, done);
+    });
+    it('PATCH /wallets devuelve un 400 por no enviar el oid.', function(done){
+        supertest(app)
+        .patch('/'+versionapi+'/wallets')
+        .send({titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
+        .expect(400, done);
+    });
+    it('DELETE /wallets devuelve un 204 eliminado correctamente.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                supertest(app)
+                .delete('/'+versionapi+'/wallets/'+o_id)
+                .expect(204, done);
+            }
+        })
+    });
+    it('DELETE /wallets devuelve un 404 usuario no encontrado.', function(done){
+        newdata = {titulo:'Cartera principal',
+        descripcion:'Mi cartera de Bitcoins principal',
+        saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
+        mongo.collection('wallets').insert(newdata,
+            function(err, result) {
+            if(err){
+                throw new Error('No se ha podido insertar la wallet.')
+            }else{
+                o_id=result.insertedIds[0]
+                mongo.collection('wallets').deleteOne({_id:o_id},function(err,result){
+                    if(err){
+                        throw new Error('No se ha podido borrar la wallet.')
+                    }else{
+                        supertest(app)
+                        .delete('/'+versionapi+'/wallets/'+o_id)
+                        .expect(404, done);
+                    }
+                })
+            }
+        })
     });
 })

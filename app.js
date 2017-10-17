@@ -18,6 +18,7 @@ app.use(bp.json())
 endpointServer = 'http://localhost:3000'
 mongo = null
 
+
 //FUNCIONAMIENTO DE LA API
 app.get('/', function(req,resp) {
    resp.send('Versión más reciente de la API: '+versionapi) 
@@ -28,6 +29,9 @@ require('./api/apiuser')
 
 //API: WALLETS
 require('./api/apiwallet')
+
+//API: externa de newsapi.org
+require('./api/apiexterna')
 
 //INICIANDO EL SERVICIO WEB EN EL PUERTO 3000
 MongoClient.connect(urlmongoprod, function(err, db) {

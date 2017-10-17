@@ -106,7 +106,6 @@ var walletObj = {
             }else if(result.result.n==0){
                 callback({err:404})
             }else{
-                console.log('deleteWallet: '+result)
                 callback({data:{status:'OK'}})
             }
         })
@@ -124,10 +123,9 @@ var walletObj = {
             function(err, result) {
             if(err){
                 callback({err:500})
-            }else if(result.n==0){
+            }else if(result.nModified==0){
                 callback({err:404})
             }else{
-                console.log('putWallet: '+result)
                 callback({data:wallet})
             }
         })
