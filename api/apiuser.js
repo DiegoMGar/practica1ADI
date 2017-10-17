@@ -79,7 +79,7 @@ app.patch(endpointCrudUsuario,function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
-				resp.status(204)
+				resp.status(200)
 				resp.send(users.data)
 			}
 		})
