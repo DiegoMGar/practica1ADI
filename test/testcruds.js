@@ -31,8 +31,7 @@ describe('Test del CRUD Usuario', function(){
     it('GET /users devuelve un listado vacío.', function(done){
         supertest(app)
             .get('/'+versionapi+'/users')
-            .expect(200)
-            .expect('[]', done);
+            .expect(200, done);
     });
     it('POST /users devuelve un 400 porque le falta el dni', function(done){
         supertest(app)
@@ -243,8 +242,7 @@ describe('Test del CRUD Wallet', function(){
     it('GET /wallets devuelve un listado vacío', function(done){
         supertest(app)
             .get('/'+versionapi+'/wallets')
-            .expect(200)
-            .expect('[]', done);
+            .expect(200, done);
     });
     it('POST /wallets devuelve 201 recurso creado', function(done){
         supertest(app)

@@ -4,6 +4,7 @@ if(!app)
 var responseObj = {data:null, links:null}
 
 //CRUD USUARIO
+///Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 var endpointCrudUsuario = '/'+versionapi+'/users'
 app.get(endpointCrudUsuario,function(req,resp){
 	try{
@@ -40,7 +41,6 @@ app.get(endpointCrudUsuario+'/:dni',function(req,resp){
 	}
 })
 app.post(endpointCrudUsuario,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
 		usuario = req.body
 		modelUser.postUser(usuario,function(users){
@@ -59,7 +59,6 @@ app.post(endpointCrudUsuario,function(req,resp){
 	}
 })
 app.put(endpointCrudUsuario,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
 		usuario = req.body
 		modelUser.putUser(usuario,function(users){
@@ -78,7 +77,6 @@ app.put(endpointCrudUsuario,function(req,resp){
 	}
 })
 app.patch(endpointCrudUsuario,function(req,resp){
-	//Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
 	try{
 		usuario = req.body
 		modelUser.patchUser(usuario,function(users){
