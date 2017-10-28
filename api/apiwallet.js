@@ -1,6 +1,8 @@
 if(!app)
     throw new Error("Express no existe en este contexto. RuntimeException.")
 
+var responseObj = {data:null, links:null}
+	
 //CRUD WALLET
 //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
 var endpointCrudWallet = '/'+versionapi+'/wallets'
@@ -11,7 +13,8 @@ app.get(endpointCrudWallet,function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -27,7 +30,8 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -44,7 +48,8 @@ app.post(endpointCrudWallet,function(req,resp){
 				resp.end()
 			}else{
                 resp.status(201)
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -61,7 +66,8 @@ app.put(endpointCrudWallet,function(req,resp){
 				resp.end()
 			}else{
                 resp.status(200)
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -78,7 +84,8 @@ app.patch(endpointCrudWallet,function(req,resp){
 				resp.end()
 			}else{
                 resp.status(200)
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -95,7 +102,8 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.end()
 			}else{
                 resp.status(200)
-				resp.send(wallets.data)
+				responseObj.data=wallets.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){

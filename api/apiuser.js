@@ -1,6 +1,8 @@
 if(!app)
     throw new Error('Express no existe en este contexto. RuntimeException.')
 
+var responseObj = {data:null, links:null}
+
 //CRUD USUARIO
 var endpointCrudUsuario = '/'+versionapi+'/users'
 app.get(endpointCrudUsuario,function(req,resp){
@@ -10,7 +12,9 @@ app.get(endpointCrudUsuario,function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
-				resp.send(users.data)
+				
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -26,7 +30,8 @@ app.get(endpointCrudUsuario+'/:dni',function(req,resp){
 				resp.status(users.err)
 				resp.end()
 			}else{
-				resp.send(users.data)
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -44,7 +49,8 @@ app.post(endpointCrudUsuario,function(req,resp){
 				resp.end()
 			}else{
 				resp.status(201)
-				resp.send(users.data)
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -62,7 +68,8 @@ app.put(endpointCrudUsuario,function(req,resp){
 				resp.end()
 			}else{
 				resp.status(200)
-				resp.send(users.data)
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -80,7 +87,8 @@ app.patch(endpointCrudUsuario,function(req,resp){
 				resp.end()
 			}else{
 				resp.status(200)
-				resp.send(users.data)
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
@@ -97,7 +105,8 @@ app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
 				resp.end()
 			}else{
 				resp.status(200)
-				resp.send(users.data)
+				responseObj.data=users.data
+				resp.send(responseObj)
 			}
 		})
 	}catch(err){
