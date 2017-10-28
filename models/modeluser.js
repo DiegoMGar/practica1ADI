@@ -37,7 +37,6 @@ var user = {
     },
     postUser:
     function(usuario, callback){
-        //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario.nombre && usuario.apellidos && usuario.dni){
             user.getDNI(usuario.dni,function(data){
                 if(data.data){
@@ -60,7 +59,6 @@ var user = {
     },
     putUser:
     function(usuario, callback){
-        //Usuario tiene: nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
         if(usuario.nombre && usuario.apellidos && usuario.dni && usuario._id){
             user.updateUser(usuario,function(result){
                 callback(result)

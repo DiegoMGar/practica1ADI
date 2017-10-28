@@ -37,7 +37,6 @@ var walletObj = {
     },
     postWallet:
     function(wallet, callback){
-        //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
             (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
             var newValues = {titulo: wallet.titulo,
@@ -59,7 +58,6 @@ var walletObj = {
     },
     putWallet:
     function(wallet, callback){
-        //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet.titulo && (wallet.descripcion || wallet.descripcion == '') && 
             (wallet.saldo || wallet.saldo==0) && wallet.moneda_symbol && wallet.usuario_dni){
             walletObj.updateWallet(wallet,function(result){
@@ -71,7 +69,6 @@ var walletObj = {
     },
     patchWallet:
     function(wallet, callback){
-        //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_dni
         if(wallet._id){
             walletObj.updateWallet(wallet,function(result){
                 callback(result)
