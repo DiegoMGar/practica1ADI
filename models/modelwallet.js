@@ -15,8 +15,6 @@ var walletObj = {
         mongo.collection(walletCollection).find({usuario_dni:oid},{}).toArray(function(err,result){
             if(err){
                 callback({err:500})
-            }else if(result.length<1){
-                callback({err:404})
             }else{
                 callback({data:result})
             }

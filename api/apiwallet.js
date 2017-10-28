@@ -1,7 +1,7 @@
 if(!app)
     throw new Error("Express no existe en este contexto. RuntimeException.")
 
-var responseObj = {data:null, links:null}
+var responseObj = {count:0,page:0,perpage:0,data:null}
 	
 //CRUD WALLET
 //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
@@ -15,6 +15,7 @@ app.get(endpointCrudWallet,function(req,resp){
 				resp.end()
 			}else{
 				responseObj.data = wallets.data
+				responseObj.count = wallets.data.length
 				responseObj.links = {}
 				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
 				resp.send(responseObj)
@@ -35,8 +36,10 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.end()
 			}else{
 				responseObj.data = wallets.data
+				responseObj.count = wallets.data.length
 				responseObj.links = {}
-				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
+				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}
+				responseObj.links.getUser = {endpoint:endpointServer+'/'+versionapi+'/users/'+dni,method:'GET'}		
 				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
 				resp.send(responseObj)
 			}
@@ -57,6 +60,7 @@ app.post(endpointCrudWallet,function(req,resp){
 			}else{
                 resp.status(201)
 				responseObj.data = wallets.data
+				responseObj.count = wallets.data.length
 				responseObj.links = {}
 				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
 				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
@@ -80,6 +84,7 @@ app.put(endpointCrudWallet,function(req,resp){
 			}else{
                 resp.status(200)
 				responseObj.data = wallets.data
+				responseObj.count = wallets.data.length
 				responseObj.links = {}
 				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
 				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
@@ -103,6 +108,7 @@ app.patch(endpointCrudWallet,function(req,resp){
 			}else{
                 resp.status(200)
 				responseObj.data = wallets.data
+				responseObj.count = wallets.data.length
 				responseObj.links = {}
 				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
 				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
@@ -125,12 +131,8 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
-                resp.status(200)
-				responseObj.data = wallets.data
-				responseObj.links = {}
-				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
-				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
-				resp.send(responseObj)
+                resp.status(204)
+				resp.end()
 			}
 		})
 	}catch(err){

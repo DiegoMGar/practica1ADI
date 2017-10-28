@@ -226,10 +226,10 @@ describe('Test del CRUD Usuario', function(){
         .send({dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
         .expect(400, done);
     });
-    it('DELETE /users devuelve un 200 eliminado correctamente.', function(done){
+    it('DELETE /users devuelve un 204 eliminado correctamente.', function(done){
         supertest(app)
             .delete('/'+versionapi+'/users/111111112')
-            .expect(200, done);
+            .expect(204, done);
     });
     it('DELETE /users devuelve un 404 usuario no encontrado.', function(done){
         supertest(app)
@@ -476,7 +476,7 @@ describe('Test del CRUD Wallet', function(){
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'})
         .expect(400, done);
     });
-    it('DELETE /wallets devuelve un 200 eliminado correctamente.', function(done){
+    it('DELETE /wallets devuelve un 204 eliminado correctamente.', function(done){
         newdata = {titulo:'Cartera principal',
         descripcion:'Mi cartera de Bitcoins principal',
         saldo:0, moneda_symbol:'BTC', usuario_dni:'48576470X'}
@@ -488,7 +488,7 @@ describe('Test del CRUD Wallet', function(){
                 o_id=result.insertedIds[0]
                 supertest(app)
                 .delete('/'+versionapi+'/wallets/'+o_id)
-                .expect(200, done);
+                .expect(204, done);
             }
         })
     });
