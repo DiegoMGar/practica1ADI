@@ -8,8 +8,7 @@ var responseObj = {count:0,page:0,perpage:0,data:null}
  * TODO: count -> sólo debe existir en respuestas de listado, hay que revisar qué peticiones devuelven listas u objetos.
  * TODO: count, page y perpage -> hay que hacer paginación para los readAll
  * TODO: links -> nextPage y previousPage en la paginación
- * TODO: acreditación con jsontoken, falta imprimir en string el objeto que devuelve jwt
-*/
+ */
 
 //CRUD USUARIO
 ///Usuario tiene: id,nombre,apellidos,dni,password,cuentabancaria,wallet,fecharegistro
