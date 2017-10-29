@@ -8,14 +8,14 @@ var responseObj = {count:0,page:0,perpage:0,data:null}
  * TODO: count -> sólo debe existir en respuestas de listado, hay que revisar qué peticiones devuelven listas u objetos.
  * TODO: count, page y perpage -> hay que hacer paginación para los readAll
  * TODO: links -> nextPage y previousPage en la paginación
- * TODO: acreditación con jsontoken
+ * TODO: acreditación con jsontoken, falta imprimir en string el objeto que devuelve jwt
 */
 
 //CRUD USUARIO
-///Usuario tiene: id,nombre,apellidos,dni,cuentabancaria,wallet,fecharegistro
+///Usuario tiene: id,nombre,apellidos,dni,password,cuentabancaria,wallet,fecharegistro
 var endpointCrudUsuario = '/'+versionapi+'/users'
 app.get(endpointCrudUsuario,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		modelUser.getAll(function(users){
 			if(users.err){
@@ -31,11 +31,11 @@ app.get(endpointCrudUsuario,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}	
 })
 app.get(endpointCrudUsuario+'/:dni',function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		dni = req.params.dni
 		modelUser.getDNI(dni,function(users){
@@ -53,11 +53,11 @@ app.get(endpointCrudUsuario+'/:dni',function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.post(endpointCrudUsuario,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		usuario = req.body
 		modelUser.postUser(usuario,function(users){
@@ -76,11 +76,34 @@ app.post(endpointCrudUsuario,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
+	}
+})
+app.post(endpointCrudUsuario+'/login',function(req,resp){
+	delete(responseObj)
+	try{
+		login = req.body
+		//login debe tener, al menos, dni y password
+		modelUser.login(login,function(user){
+			if(user.err){
+				resp.status(user.err)
+				resp.end()
+			}else{
+				responseObj.data = user.data
+				responseObj.token = jwt.encode(user.data,login.password)
+				responseObj.links = {}
+				responseObj.links.getWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets',method:'GET'}
+				responseObj.links.getUserWallets = {endpoint:endpointServer+'/'+versionapi+'/wallets/'+login.dni,method:'GET'}
+				resp.send(responseObj)
+			}
+		})
+	}catch(err){
+		resp.status(500)
+		resp.send({error:err.message})
 	}
 })
 app.put(endpointCrudUsuario,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		usuario = req.body
 		modelUser.putUser(usuario,function(users){
@@ -99,11 +122,11 @@ app.put(endpointCrudUsuario,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.patch(endpointCrudUsuario,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		usuario = req.body
 		modelUser.patchUser(usuario,function(users){
@@ -121,14 +144,18 @@ app.patch(endpointCrudUsuario,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		dni = req.params.dni
-		modelUser.deleteUser(dni,function(users){
+		token = req.body.token
+		password = req.body.password
+		login = jwt.decode(token,password) //throws exception on bad jwt decode
+		console.log("Decoding jwt: "+login)
+		modelUser.deleteUser(dni,login._id,password,function(users){
 			if(users.err){
 				resp.status(users.err)
 				resp.end()
@@ -139,6 +166,6 @@ app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })

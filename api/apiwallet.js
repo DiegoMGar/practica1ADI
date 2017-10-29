@@ -7,7 +7,7 @@ var responseObj = {count:0,page:0,perpage:0,data:null}
 //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
 var endpointCrudWallet = '/'+versionapi+'/wallets'
 app.get(endpointCrudWallet,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		modelWallet.getAll(function(wallets){
 			if(wallets.err){
@@ -23,11 +23,11 @@ app.get(endpointCrudWallet,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}	
 })
 app.get(endpointCrudWallet+'/:dni',function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		dni = req.params.dni
 		modelWallet.getDNI(dni,function(wallets){
@@ -46,11 +46,11 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.post(endpointCrudWallet,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		wallet = req.body
 		modelWallet.postWallet(wallet,function(wallets){
@@ -70,11 +70,11 @@ app.post(endpointCrudWallet,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.put(endpointCrudWallet,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		wallet = req.body
 		modelWallet.putWallet(wallet,function(wallets){
@@ -94,11 +94,11 @@ app.put(endpointCrudWallet,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.patch(endpointCrudWallet,function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		wallet = req.body
 		modelWallet.patchWallet(wallet,function(wallets){
@@ -119,11 +119,11 @@ app.patch(endpointCrudWallet,function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })
 app.delete(endpointCrudWallet+'/:dni',function(req,resp){
-	delete(responseObj.links)
+	delete(responseObj)
 	try{
 		dni = req.params.dni
 		modelWallet.deleteWallet(dni,function(wallets){
@@ -137,6 +137,6 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 		})
 	}catch(err){
 		resp.status(500)
-		resp.send(err.message)
+		resp.send({error:err.message})
 	}
 })

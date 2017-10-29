@@ -9,10 +9,12 @@ else
 	urlmongoprod = urlmongotest
 
 //variables globales
+jwt = require('jwt-simple')
 ObjectId = require('mongodb').ObjectID;
 modelUser = require('./models/modeluser')
 modelWallet = require('./models/modelwallet')
 versionapi = require('./version')
+
 app = express()
 app.use(bp.json())
 endpointServer = 'http://localhost:3000'

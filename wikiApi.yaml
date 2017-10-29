@@ -186,6 +186,36 @@ paths:
           description: Dni del usuario
           required: false
           type: string
+  /users/login:
+    post:
+      tags:
+        - user
+      summary: Obtiene el token indentificativo del usuario
+      description: Obtiene el token indentificativo del usuario
+      operationId: loginUser
+      produces:
+        - application/json
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: 'El login ha ido correctamente, devuelve el token'
+        '404':
+          description: No se ha encontrado el usuario por dni y password
+        '500':
+          description: 'Error de nodejs, jwt encode o en base de datos en servidor'
+      parameters:
+        - name: dni
+          in: formData
+          description: DNI del usuario
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Contraseña del usuario
+          required: true
+          type: string
   '/users/{dni}':
     get:
       tags:
@@ -216,17 +246,30 @@ paths:
       operationId: deleteUser
       produces:
         - application/json
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
       responses:
         '200':
-          description: 'Todo ha ido correctamente, usuario creado'
+          description: 'Todo ha ido correctamente, usuario eliminado'
         '404':
           description: No se encuentra el usuario por DNI
         '500':
-          description: Error de nodejs o en base de datos en servidor
+          description: 'Error de nodejs, jwt decode o en base de datos en servidor'
       parameters:
         - name: dni
           in: path
           description: DNI del usuario
+          required: true
+          type: string
+        - name: token
+          in: formData
+          description: Token de login necesario para acreditarse
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Contraseña del usuario
           required: true
           type: string
   /wallets:

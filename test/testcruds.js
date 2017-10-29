@@ -2,7 +2,6 @@ urlmongotest = 'mongodb://localhost:27017/testadi1718'
 var app = require('../app');
 var supertest = require('supertest');
 var versionapi = require('../version');
-var MongoClient = require('mongodb').MongoClient
 
 describe('Test de la raiz', function(){
     it('/ devuelve la versión más reciente.', function(done){
@@ -54,13 +53,13 @@ describe('Test del CRUD Usuario', function(){
     it('POST /users devuelve un 201, introducido correctamente.', function(done){
         supertest(app)
             .post('/'+versionapi+'/users')
-            .send({ dni:'111111111',nombre:'Diego1',apellidos:'Maroto' })
+            .send({ dni:'111111111',nombre:'Diego1',apellidos:'Maroto',password:"111111111"})
             .expect(201, done);
     });
     it('POST /users devuelve un 403, el usuario ya existe.', function(done){
         supertest(app)
             .post('/'+versionapi+'/users')
-            .send({ dni:'111111111',nombre:'Debe ser error',apellidos:'Debe ser error' })
+            .send({ dni:'111111111',nombre:'Debe ser error',apellidos:'Debe ser error',password:"111111111"})
             .expect(403, done);
     });
     it('GET /users/111111111 devuelve un 200.', function(done){
@@ -83,7 +82,7 @@ describe('Test del CRUD Usuario', function(){
                 o_id=result.insertedIds[0]
                 supertest(app)
                 .put('/'+versionapi+'/users')
-                .send({ _id: o_id, dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
+                .send({ _id: o_id, dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia',password:'111111111'})
                 .expect(200, done);
             }
         })
@@ -102,7 +101,7 @@ describe('Test del CRUD Usuario', function(){
                     }else{
                         supertest(app)
                         .put('/'+versionapi+'/users')
-                        .send({ _id: o_id, dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
+                        .send({ _id: o_id, dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia',password:'111111111'})
                         .expect(404, done);
                     }
                 })
@@ -112,7 +111,7 @@ describe('Test del CRUD Usuario', function(){
     it('PUT /users devuelve un 500 error de servidor por oid mal formado.', function(done){
         supertest(app)
         .put('/'+versionapi+'/users')
-        .send({ _id: '12223456456', dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
+        .send({ _id: '12223456456', dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia',password:'111111111'})
         .expect(500, done);
     });
     it('PUT /users devuelve un 400 porque le falta el dni', function(done){
@@ -226,15 +225,17 @@ describe('Test del CRUD Usuario', function(){
         .send({dni:'111111112',nombre:'Se cambia',apellidos:'Se cambia' })
         .expect(400, done);
     });
-    it('DELETE /users devuelve un 204 eliminado correctamente.', function(done){
+    it('POST /users/login devuelve un 200 autenticado correctamente.', function(done){
         supertest(app)
-            .delete('/'+versionapi+'/users/111111112')
-            .expect(204, done);
+            .post('/'+versionapi+'/users/login')
+            .send({dni:'111111111',password:'111111111'})
+            .expect(200, done);
     });
-    it('DELETE /users devuelve un 404 usuario no encontrado.', function(done){
+    it('DELETE /users devuelve un 500 token incorrecto.', function(done){
         supertest(app)
-            .delete('/'+versionapi+'/users/abc')
-            .expect(404, done);
+            .delete('/'+versionapi+'/users/111111111')
+            .send({token:'abcdefghijklmnñopqrstuvwxyz',password:'111111111'})
+            .expect(500, done);
     });
 })
 
