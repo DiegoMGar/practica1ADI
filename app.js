@@ -52,8 +52,8 @@ MongoClient.connect(urlmongoprod, function(err, db) {
 	}
 })
 function launchServer() {
-	app.listen(3000, function () {
-		console.log('El servidor express está en el puerto 3000')
+	app.listen(80, function () {
+		console.log('El servidor express está en el puerto 80')
 	})
 }
 
