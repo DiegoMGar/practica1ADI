@@ -18,9 +18,9 @@ Simulación de broker en bolsa para compra/venta de criptomonedas.
 - Como usuario autenticado debo ser capaz de editar y eliminar mi usuario.
 - Como usuario no autenticado debo ser capaz de CRUD carteras.
 - Como usuario no autenticado debo ser capaz de ver fuentes de noticias (api externa).
-  - Ejemplo: http localhost:3000/newsapi
+  - Ejemplo: http localhost:3000/v1/newsapi
 - Como usuario no autenticado debo ser capaz de ver noticias de una fuente seleccionada (api externa).
-  - Ejemplo: http localhost:3000/newsapi/wirtschafts-woche
+  - Ejemplo: http localhost:3000/v1/newsapi/wirtschafts-woche
 
 > Se sabe que no hay seguridad en la aplicación, las contraseñas salen en claro en los listados y se cuenta con ello, se está seleccionando el objeto usuario entero para facilitar el desarrollo y la fase de debug.
 

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Wiki de la práctica de ADI 2017 en la Universidad de Alicante.\n **Author:** Diego Maroto.",
+    "description": "Wiki de la práctica de ADI 2017 en la Universidad de Alicante.\n **Author:** Diego Maroto.\n **REPO:** https://github.com/DiegoMGar/practica1ADI",
     "version": "1.0.0",
     "title": "Crytocurrency wallet",
     "termsOfService": "",
@@ -9,7 +9,7 @@
       "email": "dmg65@alu.ua.es"
     }
   },
-  "host": "www.midominio.com",
+  "host": "localhost:3000",
   "basePath": "/v1",
   "tags": [
     {
@@ -148,6 +148,13 @@
             "description": "Dni del usuario",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Contraseña del usuario",
+            "required": true,
+            "type": "string"
           }
         ]
       },
@@ -176,7 +183,7 @@
             "description": "No se encuentra el usuario por oid"
           },
           "500": {
-            "description": "Error de nodejs o en base de datos en servidor"
+            "description": "Error de nodejs, jwt encode o en base de datos en servidor"
           }
         },
         "parameters": [
@@ -205,6 +212,20 @@
             "name": "dni",
             "in": "formData",
             "description": "Dni del usuario",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "formData",
+            "description": "Token de login necesario para acreditarse",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Contraseña del usuario",
             "required": true,
             "type": "string"
           }
@@ -235,7 +256,7 @@
             "description": "No se encuentra el usuario por oid"
           },
           "500": {
-            "description": "Error de nodejs o en base de datos en servidor"
+            "description": "Error de nodejs, jwt encode o en base de datos en servidor"
           }
         },
         "parameters": [
@@ -265,6 +286,20 @@
             "in": "formData",
             "description": "Dni del usuario",
             "required": false,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "formData",
+            "description": "Token de login necesario para acreditarse",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Contraseña del usuario",
+            "required": true,
             "type": "string"
           }
         ]

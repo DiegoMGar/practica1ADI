@@ -3,12 +3,13 @@ info:
   description: |-
     Wiki de la práctica de ADI 2017 en la Universidad de Alicante.
      **Author:** Diego Maroto.
+     **REPO:** https://github.com/DiegoMGar/practica1ADI
   version: 1.0.0
   title: Crytocurrency wallet
   termsOfService: ''
   contact:
     email: dmg65@alu.ua.es
-host: www.midominio.com
+host: 'localhost:3000'
 basePath: /v1
 tags:
   - name: news
@@ -104,6 +105,11 @@ paths:
           description: Dni del usuario
           required: true
           type: string
+        - name: password
+          in: formData
+          description: Contraseña del usuario
+          required: true
+          type: string
     put:
       tags:
         - user
@@ -123,7 +129,7 @@ paths:
         '404':
           description: No se encuentra el usuario por oid
         '500':
-          description: Error de nodejs o en base de datos en servidor
+          description: 'Error de nodejs, jwt encode o en base de datos en servidor'
       parameters:
         - name: _id
           in: formData
@@ -143,6 +149,16 @@ paths:
         - name: dni
           in: formData
           description: Dni del usuario
+          required: true
+          type: string
+        - name: token
+          in: formData
+          description: Token de login necesario para acreditarse
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Contraseña del usuario
           required: true
           type: string
     patch:
@@ -164,7 +180,7 @@ paths:
         '404':
           description: No se encuentra el usuario por oid
         '500':
-          description: Error de nodejs o en base de datos en servidor
+          description: 'Error de nodejs, jwt encode o en base de datos en servidor'
       parameters:
         - name: _id
           in: formData
@@ -185,6 +201,16 @@ paths:
           in: formData
           description: Dni del usuario
           required: false
+          type: string
+        - name: token
+          in: formData
+          description: Token de login necesario para acreditarse
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: Contraseña del usuario
+          required: true
           type: string
   /users/login:
     post:

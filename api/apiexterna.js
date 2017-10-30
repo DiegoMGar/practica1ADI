@@ -4,7 +4,7 @@ if(!app)
 var request = require('request')
 //La api de newapi.org para hacer peticiones externas
 apinewsapi = '47cd6e317d8e42a4908d909b4e119d6d'
-var endpointApiNewsApi = '/newsapi'
+var endpointApiNewsApi = '/'+versionapi+'/newsapi'
 app.get(endpointApiNewsApi, function(req, res, next) {
     request('https://newsapi.org/v1/sources', function (error, response, body) {
         if (!error && response.statusCode == 200) {
