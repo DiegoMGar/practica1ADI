@@ -105,7 +105,10 @@ app.put(endpointCrudUsuario,function(req,resp){
 	delete(responseObj)
 	try{
 		usuario = req.body
-		modelUser.putUser(usuario,function(users){
+		token = req.body.token
+		password = req.body.password
+		login = jwt.decode(token,password) //throws exception on bad jwt decode
+		modelUser.putUser(usuario,login._id,password,function(users){
 			if(users.err){
 				resp.status(users.err)
 				resp.end()
@@ -128,7 +131,10 @@ app.patch(endpointCrudUsuario,function(req,resp){
 	delete(responseObj)
 	try{
 		usuario = req.body
-		modelUser.patchUser(usuario,function(users){
+		token = req.body.token
+		password = req.body.password
+		login = jwt.decode(token,password) //throws exception on bad jwt decode
+		modelUser.patchUser(usuario,login._id,password,function(users){
 			if(users.err){
 				resp.status(users.err)
 				resp.end()
@@ -153,7 +159,6 @@ app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
 		token = req.body.token
 		password = req.body.password
 		login = jwt.decode(token,password) //throws exception on bad jwt decode
-		console.log("Decoding jwt: "+login)
 		modelUser.deleteUser(dni,login._id,password,function(users){
 			if(users.err){
 				resp.status(users.err)
