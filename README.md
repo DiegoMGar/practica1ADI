@@ -45,6 +45,8 @@ El resto de dependencias se pueden instalar con `npm install`, usando el fichero
 
 > Se sabe que no hay seguridad en la aplicación, las contraseñas salen en claro en los listados y se cuenta con ello, se está seleccionando el objeto usuario entero para facilitar el desarrollo y la fase de debug.
 
+> Se sabe que se debería implementar seguridad de autenticación para el ataque a la entidad wallet, se hará para la siguiente entrega.
+
 **Implementado para la primera entrega:**
 
 - Crud de Usuario.
