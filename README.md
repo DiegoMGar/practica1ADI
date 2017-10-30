@@ -8,6 +8,13 @@ Aplicación basada en nodejs, express y mongodb para poner en funcionamiento un 
 ### Contenido
 Simulación de broker en bolsa para compra/venta de criptomonedas.
 
+### Dependencias
+Esta aplicación hace uso de **MONGODB**, con la instalación básica y automática es suficiente, la aplicación se ocupa de manejar las colecciones
+
+Por defecto usa el **puerto 27017**, si es diferente, hay que cambiarlo en la variable `urlmongoprod` de app.js
+
+El resto de dependencias se pueden instalar con `npm install`, usando el fichero `package.json`.
+
 ### Repo
 [Github - Práctica1 ADI](https://github.com/DiegoMGar/practica1ADI)
 
