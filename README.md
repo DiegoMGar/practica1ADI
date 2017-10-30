@@ -32,7 +32,7 @@ El resto de dependencias se pueden instalar con `npm install`, usando el fichero
 - Como usuario no autenticado debo ser capaz de listar cartera/s.
   - `http localhost:3000/v1/wallets`
 - Como usuario no autenticado debo ser capaz de crear un usuario.
-  - `http post localhost:3000/v1/users/login dni="123456789X" password="123456789X"`
+  - `http post localhost:3000/v1/users dni="123456789X" password="123456789X" nombre="ejemplo" apellidos="apellidos de ejemplo"`
 - Como usuario autenticado debo ser capaz de editar y eliminar mi usuario.
   - `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X"`
   - `http delete localhost:3000/v1/users/123456789X token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X"`
@@ -61,11 +61,19 @@ Visualiza `swagger_editor.html` en tu navegador favorito, se cargará por defect
 Al abrir `swagger_editor.html`, a la derecha, se puede navegar de forma visual por la especificación del API.
 
 ### Ejemplos de uso:
-- `http localhost:3000/v1/users //Devuelve 200 y un listado`
-- `http post localhost:3000/v1/users dni="123456789X" password="123456789X" nombre="ejemplo" apellidos="apellidos de ejemplo" //Devuelve 201 y datos`
-- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado" //Devuelve un 500, falta el token`
-- `http post localhost:3000/v1/users/login dni="123456789X" password="123456789X" //Devuelve 200 y token, con el objeto que resume el token`
-- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X" //Devuelve 200 y los datos cambiados`
-- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado2" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789" //Devuelve un 500 error en firma`
-- `http put localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado2" apellidos="apellidos de ejemplo" dni="123456789X" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X" //Devuelve un 200 y los datos cambiados`
-- `http localhost:3000/v1/users/123456789X //Devuelve 200 y los datos finales del usuario que se ha ido editando`
+- `http localhost:3000/v1/users`
+  - Devuelve 200 y un listado
+- `http post localhost:3000/v1/users dni="123456789X" password="123456789X" nombre="ejemplo" apellidos="apellidos de ejemplo"`
+  - Devuelve 201 y datos
+- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado"`
+  - Devuelve un 500, falta el token
+- `http post localhost:3000/v1/users/login dni="123456789X" password="123456789X"`
+  - Devuelve 200 y token, con el objeto que resume el token
+- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X"`
+  - Devuelve 200 y los datos cambiados
+- `http patch localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado2" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789"`
+  - Devuelve un 500 error en firma
+- `http put localhost:3000/v1/users _id="59f70a542fbe3f177be4d7e8" nombre="ejemplocambiado2" apellidos="apellidos de ejemplo" dni="123456789X" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1OWY3MGE1NDJmYmUzZjE3N2JlNGQ3ZTgiLCJkbmkiOiIxMjM0NTY3ODlYIn0.hbijfzsFEhiIYEb5XH5ftnvBoWLyo3b86SmOw8Yeis0" password="123456789X"`
+  - Devuelve un 200 y los datos cambiados
+- `http localhost:3000/v1/users/123456789X`
+  - Devuelve 200 y los datos finales del usuario que se ha ido editando
