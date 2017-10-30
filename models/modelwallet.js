@@ -1,12 +1,14 @@
 var walletCollection = 'wallets'
 var walletObj = {
     getAll:
-    function(callback){
-        mongo.collection(walletCollection).find({}).toArray(function(err,result){
+    function(page,perpage,callback){
+        mongo.collection(walletCollection).find({}).limit(perpage).skip(page*perpage).toArray(function(err,result){
             if(err){
                 callback({err:500})
             }else{
-                callback({data:result})
+                mongo.collection(walletCollection).count({}, function(err, count) {
+                    callback({data:result,totalElements:count})
+                })
             }
         })
     },

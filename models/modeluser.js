@@ -1,12 +1,14 @@
 var userCollection = 'users'
 var user = {
     getAll:
-    function(callback){
-        mongo.collection(userCollection).find({}).toArray(function(err,result){
+    function(page,perpage,callback){
+        mongo.collection(userCollection).find({}).limit(perpage).skip(page*perpage).toArray(function(err,result){
             if(err){
                 callback({err:500})
             }else{
-                callback({data:result})
+                mongo.collection(userCollection).count({}, function(err, count) {
+                    callback({data:result,totalElements:count})
+                })
             }
         })
     },

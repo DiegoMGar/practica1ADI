@@ -1,20 +1,28 @@
 if(!app)
     throw new Error("Express no existe en este contexto. RuntimeException.")
 
-var responseObj = {count:0,page:0,perpage:0,data:null}
 	
 //CRUD WALLET
 //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
 var endpointCrudWallet = '/'+versionapi+'/wallets'
 app.get(endpointCrudWallet,function(req,resp){
-	delete(responseObj)
+	var responseObj = {count:0,page:0,perpage:0,data:null}
 	try{
-		modelWallet.getAll(function(wallets){
+		if(req.query.page && !isNaN(req.query.page)) responseObj.page = req.query.page
+		else responseObj.page = 0
+		responseObj.perpage = 10
+		modelWallet.getAll(responseObj.page,responseObj.perpage,function(wallets){
 			if(wallets.err){
 				resp.status(wallets.err)
 				resp.end()
 			}else{
 				responseObj.data = wallets.data
+				responseObj.totalElements = wallets.totalElements
+				responseObj.totalPages = Math.floor(wallets.totalElements/responseObj.perpage)+1
+				if(responseObj.totalPages-1 > responseObj.page)
+					responseObj.nextPage = endpointServer+'/'+versionapi+'/wallets/?page='+(parseInt(responseObj.page)+1)
+				if(responseObj.page > 0)
+					responseObj.previousPage = endpointServer+'/'+versionapi+'/wallets/?page='+(parseInt(responseObj.page)-1)
 				responseObj.count = wallets.data.length
 				responseObj.links = {}
 				responseObj.links.getUsers = {endpoint:endpointServer+'/'+versionapi+'/users',method:'GET'}				
@@ -27,7 +35,7 @@ app.get(endpointCrudWallet,function(req,resp){
 	}	
 })
 app.get(endpointCrudWallet+'/:dni',function(req,resp){
-	delete(responseObj)
+	var responseObj = {}
 	try{
 		dni = req.params.dni
 		modelWallet.getDNI(dni,function(wallets){
@@ -50,7 +58,7 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 	}
 })
 app.post(endpointCrudWallet,function(req,resp){
-	delete(responseObj)
+	var responseObj = {}
 	try{
 		wallet = req.body
 		modelWallet.postWallet(wallet,function(wallets){
@@ -74,7 +82,7 @@ app.post(endpointCrudWallet,function(req,resp){
 	}
 })
 app.put(endpointCrudWallet,function(req,resp){
-	delete(responseObj)
+	var responseObj = {}
 	try{
 		wallet = req.body
 		modelWallet.putWallet(wallet,function(wallets){
@@ -98,7 +106,7 @@ app.put(endpointCrudWallet,function(req,resp){
 	}
 })
 app.patch(endpointCrudWallet,function(req,resp){
-	delete(responseObj)
+	var responseObj = {}
 	try{
 		wallet = req.body
 		modelWallet.patchWallet(wallet,function(wallets){
@@ -123,7 +131,6 @@ app.patch(endpointCrudWallet,function(req,resp){
 	}
 })
 app.delete(endpointCrudWallet+'/:dni',function(req,resp){
-	delete(responseObj)
 	try{
 		dni = req.params.dni
 		modelWallet.deleteWallet(dni,function(wallets){

@@ -93,6 +93,15 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página que visitar, muestra cantidad múltiplo de 10",
+            "required": false,
+            "type": "integer"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Devuelve un listado de los usuarios, array vacío si no hay usuarios registrados"
@@ -179,11 +188,14 @@
           "400": {
             "description": "Faltan campos obligatorios"
           },
+          "403": {
+            "description": "Error en el token, en la contraseña, o en la acreditación."
+          },
           "404": {
             "description": "No se encuentra el usuario por oid"
           },
           "500": {
-            "description": "Error de nodejs, jwt encode o en base de datos en servidor"
+            "description": "Error de nodejs  o en base de datos en servidor"
           }
         },
         "parameters": [
@@ -252,11 +264,14 @@
           "400": {
             "description": "Faltan campos obligatorios"
           },
+          "403": {
+            "description": "Error en el token, en la contraseña, o en la acreditación."
+          },
           "404": {
             "description": "No se encuentra el usuario por oid"
           },
           "500": {
-            "description": "Error de nodejs, jwt encode o en base de datos en servidor"
+            "description": "Error de nodejs  o en base de datos en servidor"
           }
         },
         "parameters": [
@@ -399,11 +414,14 @@
           "200": {
             "description": "Todo ha ido correctamente, usuario eliminado"
           },
+          "403": {
+            "description": "Error en el token, en la contraseña, o en la acreditación."
+          },
           "404": {
             "description": "No se encuentra el usuario por DNI"
           },
           "500": {
-            "description": "Error de nodejs, jwt decode o en base de datos en servidor"
+            "description": "Error de nodejs o en base de datos en servidor"
           }
         },
         "parameters": [
@@ -441,6 +459,15 @@
         "operationId": "getWallets",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página que visitar, muestra cantidad múltiplo de 10",
+            "required": false,
+            "type": "integer"
+          }
         ],
         "responses": {
           "200": {
