@@ -1,6 +1,7 @@
 //variables locales
 var express = require('express')
 var bp = require('body-parser')
+var cors = require('cors')
 var MongoClient = require('mongodb').MongoClient
 var urlmongoprod = ''
 if(typeof urlmongotest == 'undefined')
@@ -17,6 +18,7 @@ versionapi = require('./version')
 
 app = express()
 app.use(bp.json())
+app.use(cors())
 endpointServer = 'http://localhost:3000'
 mongo = null
 

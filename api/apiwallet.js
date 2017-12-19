@@ -6,6 +6,7 @@ if(!app)
 //Wallet tiene: titulo, descripción, fechaCreada, saldo, moneda_symbol y usuario_oid
 var endpointCrudWallet = '/'+versionapi+'/wallets'
 app.get(endpointCrudWallet,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {count:0,page:0,perpage:0,data:null}
 	try{
 		if(req.query.page && !isNaN(req.query.page)) responseObj.page = req.query.page
@@ -35,6 +36,7 @@ app.get(endpointCrudWallet,function(req,resp){
 	}	
 })
 app.get(endpointCrudWallet+'/:dni',function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		dni = req.params.dni
@@ -58,6 +60,7 @@ app.get(endpointCrudWallet+'/:dni',function(req,resp){
 	}
 })
 app.post(endpointCrudWallet,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		wallet = req.body
@@ -82,6 +85,7 @@ app.post(endpointCrudWallet,function(req,resp){
 	}
 })
 app.put(endpointCrudWallet,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		wallet = req.body
@@ -106,6 +110,7 @@ app.put(endpointCrudWallet,function(req,resp){
 	}
 })
 app.patch(endpointCrudWallet,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		wallet = req.body
@@ -131,6 +136,7 @@ app.patch(endpointCrudWallet,function(req,resp){
 	}
 })
 app.delete(endpointCrudWallet+'/:dni',function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	try{
 		dni = req.params.dni
 		modelWallet.deleteWallet(dni,function(wallets){
@@ -146,4 +152,11 @@ app.delete(endpointCrudWallet+'/:dni',function(req,resp){
 		resp.status(500)
 		resp.send({error:err.message})
 	}
+})
+app.options(endpointCrudWallet,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
+	resp.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS, PUT, PATCH, DELETE')
+	resp.setHeader('Access-Control-Allow-Headers','Content-Type')
+	resp.status(200)
+	resp.end()
 })

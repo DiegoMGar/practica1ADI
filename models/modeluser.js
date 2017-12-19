@@ -40,7 +40,7 @@ var user = {
     login:
     function(login,callback){
         if(login.dni && login.password){
-            mongo.collection(userCollection).find({dni:login.dni,password:login.password},{_id:true,dni:true}).toArray(function(err,result){
+            mongo.collection(userCollection).find({dni:login.dni,password:login.password},{_id:true,dni:true,nombre:true,apellidos:true}).toArray(function(err,result){
                 if(err){
                     callback({err:500})
                 }else if(result.length<1){

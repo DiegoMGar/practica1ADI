@@ -12,6 +12,7 @@ if(!app)
 ///Usuario tiene: id,nombre,apellidos,dni,password,cuentabancaria,wallet,fecharegistro
 var endpointCrudUsuario = '/'+versionapi+'/users'
 app.get(endpointCrudUsuario,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {count:0,page:0,perpage:0,data:null}
 	try{
 		if(req.query.page && !isNaN(req.query.page)) responseObj.page = req.query.page
@@ -41,6 +42,7 @@ app.get(endpointCrudUsuario,function(req,resp){
 	}	
 })
 app.get(endpointCrudUsuario+'/:dni',function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		dni = req.params.dni
@@ -63,6 +65,7 @@ app.get(endpointCrudUsuario+'/:dni',function(req,resp){
 	}
 })
 app.post(endpointCrudUsuario,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		usuario = req.body
@@ -86,6 +89,7 @@ app.post(endpointCrudUsuario,function(req,resp){
 	}
 })
 app.post(endpointCrudUsuario+'/login',function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	try{
 		login = req.body
@@ -109,6 +113,7 @@ app.post(endpointCrudUsuario+'/login',function(req,resp){
 	}
 })
 app.put(endpointCrudUsuario,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	var override500 = false
 	try{
@@ -142,6 +147,7 @@ app.put(endpointCrudUsuario,function(req,resp){
 	}
 })
 app.patch(endpointCrudUsuario,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var responseObj = {}
 	var override500 = false
 	try{
@@ -174,6 +180,7 @@ app.patch(endpointCrudUsuario,function(req,resp){
 	}
 })
 app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
 	var override500 = false
 	try{
 		dni = req.params.dni
@@ -199,4 +206,11 @@ app.delete(endpointCrudUsuario+'/:dni',function(req,resp){
 		resp.status(status)
 		resp.send({error:err.message})
 	}
+})
+app.options(endpointCrudUsuario,function(req,resp){
+	resp.setHeader('Access-Control-Allow-Origin','*')
+	resp.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS, PUT, PATCH, DELETE')
+	resp.setHeader('Access-Control-Allow-Headers','Content-Type')
+	resp.status(200)
+	resp.end()
 })
